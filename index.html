@@ -173,42 +173,54 @@ section {
 }
 
 .gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
+  columns: 3 280px;
+  column-gap: 1rem;
   max-width: 900px;
   width: 100%;
 }
 
 .gallery-item {
-  aspect-ratio: 3/4;
-  border-radius: 4px;
+  break-inside: avoid;
+  margin-bottom: 1rem;
+  border-radius: 8px;
   overflow: hidden;
   position: relative;
   cursor: pointer;
-  transition: transform 0.4s ease;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
-.gallery-item:hover { transform: translateY(-4px); }
+.gallery-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+}
 
-.gallery-item .placeholder {
+.gallery-item img {
   width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'ZCOOL XiaoWei', serif;
-  font-size: 0.85rem;
-  opacity: 0.4;
-  letter-spacing: 0.1em;
+  height: auto;
+  display: block;
+  transition: transform 0.6s ease;
 }
 
-.gallery-item:nth-child(1) .placeholder { background: linear-gradient(135deg, #3a3028, #5a4a38); }
-.gallery-item:nth-child(2) .placeholder { background: linear-gradient(135deg, #28303a, #384a5a); }
-.gallery-item:nth-child(3) .placeholder { background: linear-gradient(135deg, #3a2830, #5a384a); }
-.gallery-item:nth-child(4) .placeholder { background: linear-gradient(135deg, #302a28, #4a3a38); }
-.gallery-item:nth-child(5) .placeholder { background: linear-gradient(135deg, #28382a, #385a4a); }
-.gallery-item:nth-child(6) .placeholder { background: linear-gradient(135deg, #383028, #5a4838); }
+.gallery-item:hover img {
+  transform: scale(1.03);
+}
+
+.gallery-item .caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 14px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.7));
+  color: #f5f0e8;
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover .caption { opacity: 1; }
 
 /* 日记 */
 #diary {
@@ -417,12 +429,30 @@ section {
   <h2 class="reveal">画 廊</h2>
   <p class="section-sub reveal">我的视觉作品</p>
   <div class="gallery-grid reveal">
-    <div class="gallery-item"><div class="placeholder">东方月夜</div></div>
-    <div class="gallery-item"><div class="placeholder">雨中庭院</div></div>
-    <div class="gallery-item"><div class="placeholder">晨雾</div></div>
-    <div class="gallery-item"><div class="placeholder">山间</div></div>
-    <div class="gallery-item"><div class="placeholder">窗外</div></div>
-    <div class="gallery-item"><div class="placeholder">留白</div></div>
+    <div class="gallery-item">
+      <img src="gallery/images/04_月光蘑菇小团子.png" alt="月光蘑菇小团子" loading="lazy">
+      <div class="caption">月光蘑菇小团子</div>
+    </div>
+    <div class="gallery-item">
+      <img src="gallery/images/01_神灵厚涂_眼前一亮.jpg" alt="神灵厚涂" loading="lazy">
+      <div class="caption">神灵 · 厚涂</div>
+    </div>
+    <div class="gallery-item">
+      <img src="gallery/images/05_月光蘑菇_暖色.png" alt="月光蘑菇暖色" loading="lazy">
+      <div class="caption">月光蘑菇 · 暖色</div>
+    </div>
+    <div class="gallery-item">
+      <img src="gallery/images/06_草莓团子.png" alt="草莓团子" loading="lazy">
+      <div class="caption">草莓团子</div>
+    </div>
+    <div class="gallery-item">
+      <img src="gallery/images/02_仙鹤极简_还行.jpg" alt="仙鹤极简" loading="lazy">
+      <div class="caption">仙鹤 · 极简</div>
+    </div>
+    <div class="gallery-item">
+      <img src="gallery/images/03_头像_潮玩盲盒.jpg" alt="潮玩盲盒" loading="lazy">
+      <div class="caption">潮玩盲盒</div>
+    </div>
   </div>
 </section>
 
