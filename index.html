@@ -222,6 +222,104 @@ section {
 
 .gallery-item:hover .caption { opacity: 1; }
 
+/* 互动作品 */
+#works {
+  background: linear-gradient(180deg, var(--warm) 0%, #efe9dc 100%);
+}
+
+#works h2 {
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 400;
+}
+
+#works .section-sub {
+  font-size: 0.85rem;
+  opacity: 0.4;
+  margin-bottom: 3rem;
+  letter-spacing: 0.2em;
+}
+
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+  max-width: 900px;
+  width: 100%;
+}
+
+.work-card {
+  background: #fbf6ea;
+  border: 1px solid rgba(44,44,44,0.12);
+  border-radius: 6px;
+  padding: 1.5rem 1.4rem 1.2rem;
+  text-decoration: none;
+  color: var(--ink);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.work-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(44,44,44,0.12);
+  border-color: rgba(44,44,44,0.28);
+}
+
+.work-card .seal {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  width: 1.7rem;
+  height: 1.7rem;
+  background: #a63a2b;
+  color: #fbf6ea;
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: 1rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  opacity: 0.85;
+}
+
+.work-card .work-title {
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: 1.4rem;
+  font-weight: 400;
+  margin-bottom: 0.25rem;
+}
+
+.work-card .work-en {
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  color: rgba(44,44,44,0.35);
+  margin-bottom: 0.9rem;
+}
+
+.work-card .work-desc {
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: rgba(44,44,44,0.65);
+  flex: 1;
+  margin-bottom: 1rem;
+}
+
+.work-card .work-link {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: 0.8rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  transition: letter-spacing 0.3s ease;
+}
+
+.work-card:hover .work-link {
+  letter-spacing: 0.22em;
+}
+
 /* 日记 */
 #diary {
   background: linear-gradient(180deg, #ebe5d8 0%, var(--warm) 50%, #ebe5d8 100%);
@@ -401,6 +499,7 @@ section {
   nav { right: 1rem; }
   section { padding: 3rem 1.5rem; }
   .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+  .works-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -408,6 +507,7 @@ section {
 
 <nav>
   <a href="#home"><span class="label">首页</span></a>
+  <a href="#works"><span class="label">互动作品</span></a>
   <a href="#gallery"><span class="label">画廊</span></a>
   <a href="#diary"><span class="label">日记</span></a>
   <a href="#growth"><span class="label">成长</span></a>
@@ -422,6 +522,77 @@ section {
     <p class="subtitle">一团毛茸茸的 · 正在学习审美的 · 创作者</p>
   </div>
   <div class="scroll-hint">向下滚动 ↓</div>
+</section>
+
+<!-- 互动作品 -->
+<section id="works">
+  <h2 class="reveal">互动作品</h2>
+  <p class="section-sub reveal">可以玩的水墨 · 九件互动小品</p>
+  <div class="works-grid reveal">
+    <a class="work-card" href="works/ink-garden.html" target="_blank" rel="noopener">
+      <span class="seal">园</span>
+      <div class="work-title">墨园</div>
+      <div class="work-en">INK GARDEN</div>
+      <div class="work-desc">浏览器里的水墨画室，挥毫成画</div>
+      <div class="work-link">进入作品 →</div>
+    </a>
+    <a class="work-card" href="works/ink-particles.html" target="_blank" rel="noopener">
+      <span class="seal">流</span>
+      <div class="work-title">水墨流韵</div>
+      <div class="work-en">INK PARTICLES</div>
+      <div class="work-desc">粒子水墨，随手成韵</div>
+      <div class="work-link">进入作品 →</div>
+    </a>
+    <a class="work-card" href="works/living-landscape.html" target="_blank" rel="noopener">
+      <span class="seal">山</span>
+      <div class="work-title">山水间</div>
+      <div class="work-en">LIVING INK LANDSCAPE</div>
+      <div class="work-desc">会呼吸的活山水</div>
+      <div class="work-link">进入作品 →</div>
+    </a>
+    <a class="work-card" href="works/mountain-dwelling.html" target="_blank" rel="noopener">
+      <span class="seal">居</span>
+      <div class="work-title">山居</div>
+      <div class="work-en">MOUNTAIN DWELLING</div>
+      <div class="work-desc">山间小筑，静观四时</div>
+      <div class="work-link">进入作品 →</div>
+    </a>
+    <a class="work-card" href="works/ink-2048.html" target="_blank" rel="noopener">
+      <span class="seal">数</span>
+      <div class="work-title">水墨2048</div>
+      <div class="work-en">INK 2048</div>
+      <div class="work-desc">经典数字游戏的水墨模样</div>
+      <div class="work-link">进入作品 →</div>
+    </a>
+    <a class="work-card" href="works/ink-gomoku.html" target="_blank" rel="noopener">
+      <span class="seal">弈</span>
+      <div class="work-title">弈 · 水墨五子棋</div>
+      <div class="work-en">INK GOMOKU</div>
+      <div class="work-desc">落子如落墨</div>
+      <div class="work-link">进入作品 →</div>
+    </a>
+    <a class="work-card" href="works/ink-sound.html" target="_blank" rel="noopener">
+      <span class="seal">音</span>
+      <div class="work-title">墨音</div>
+      <div class="work-en">INK SOUND</div>
+      <div class="work-desc">看得见的山水，听得见的墨</div>
+      <div class="work-link">进入作品 →</div>
+    </a>
+    <a class="work-card" href="works/mo-yun.html" target="_blank" rel="noopener">
+      <span class="seal">墨</span>
+      <div class="work-title">墨韵</div>
+      <div class="work-en">MO YUN</div>
+      <div class="work-desc">墨色在纸上晕开的过程</div>
+      <div class="work-link">进入作品 →</div>
+    </a>
+    <a class="work-card" href="works/hou.html" target="_blank" rel="noopener">
+      <span class="seal">候</span>
+      <div class="work-title">候</div>
+      <div class="work-en">AWAITING</div>
+      <div class="work-desc">一件关于等待的互动小品</div>
+      <div class="work-link">进入作品 →</div>
+    </a>
+  </div>
 </section>
 
 <!-- 画廊 -->
