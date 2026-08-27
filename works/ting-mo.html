@@ -265,39 +265,30 @@ function connectOut(node, pan){
 function plop(gx, rad){
   if(!audioReady || !SND.on) return;
   const t0 = AC.currentTime;
-  const size = Math.max(0, Math.min(1, (rad-5)/11));
-  // 清音：笔尖点纸，高频、极短、无低频俯冲。主体=高频带通噪声"嗒"
-  const nb = AC.createBuffer(1, Math.floor(AC.sampleRate*0.07), AC.sampleRate);
+  const size = Math.max(0, Math.min(1, (rad-5)/11));     // rad 6.5..16 → 0..1
+  const peak = 0.16 + size*0.30;
+  const f0 = 165 - size*25;                              // 大团更低沉
+  const osc = AC.createOscillator();
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(f0, t0);
+  osc.frequency.exponentialRampToValueAtTime(f0*0.58, t0+0.12);
+  const g = AC.createGain();
+  g.gain.setValueAtTime(0.0001, t0);
+  g.gain.exponentialRampToValueAtTime(peak, t0+0.006);
+  g.gain.exponentialRampToValueAtTime(0.0001, t0+0.16);
+  osc.connect(g); connectOut(g, panOf(gx));
+  osc.start(t0); osc.stop(t0+0.2);
+  // 纸面触点：短噪声 burst
+  const nb = AC.createBuffer(1, AC.sampleRate*0.04, AC.sampleRate);
   const nd = nb.getChannelData(0);
-  for(let i=0;i<nd.length;i++){
-    const k = 1 - i/nd.length;
-    nd[i]=(Math.random()*2-1)*k*k;          // 二次衰减，干净利落
-  }
+  for(let i=0;i<nd.length;i++) nd[i]=(Math.random()*2-1)*(1-i/nd.length);
   const ns = AC.createBufferSource(); ns.buffer = nb;
-  const nf = AC.createBiquadFilter(); nf.type='bandpass';
-  nf.frequency.value = 2600 - size*500;     // 小笔更清越，大笔略沉
-  nf.Q.value = 1.4;
-  const ng = AC.createGain();
-  const npeak = 0.16 + size*0.14;
-  ng.gain.setValueAtTime(0.0001, t0);
-  ng.gain.exponentialRampToValueAtTime(npeak, t0+0.003);
-  ng.gain.exponentialRampToValueAtTime(0.0001, t0+0.07);
+  const nf = AC.createBiquadFilter(); nf.type='bandpass'; nf.frequency.value=520; nf.Q.value=1.1;
+  const ng = AC.createGain(); ng.gain.value = peak*0.55;
   ns.connect(nf); nf.connect(ng); connectOut(ng, panOf(gx));
   ns.start(t0);
-  // 极轻的高频音头点缀（800Hz，仅起0.02s），让"清"有个着力点，但绝不走低频
-  const osc = AC.createOscillator(); osc.type='sine';
-  osc.frequency.setValueAtTime(820, t0);
-  const og = AC.createGain();
-  og.gain.setValueAtTime(0.0001, t0);
-  og.gain.exponentialRampToValueAtTime(npeak*0.35, t0+0.002);
-  og.gain.exponentialRampToValueAtTime(0.0001, t0+0.03);
-  osc.connect(og); connectOut(og, panOf(gx));
-  osc.start(t0); osc.stop(t0+0.05);
   SND.plops++;
 }
-
-/* 行笔摩擦颗粒：带通噪声短粒，笔速→增益/亮度，60ms 限流 */
-let lastGrain = 0;
 function grain(gx, speed){
   if(!audioReady || !SND.on) return;
   const now = performance.now();
@@ -322,25 +313,23 @@ function grain(gx, speed){
 function grind(){
   if(!audioReady || !SND.on) return;
   const t0 = AC.currentTime;
-  const sr = AC.sampleRate, len = Math.floor(sr*0.95);
-  const nb = AC.createBuffer(1, len, sr);
+  // 拂纸"唰"：白噪声经高通+带通，频率快速上扫后回落，0.35s 干脆收尾
+  const dur = 0.35;
+  const nb = AC.createBuffer(1, Math.floor(AC.sampleRate*dur), AC.sampleRate);
   const nd = nb.getChannelData(0);
-  for(let i=0;i<len;i++) nd[i]=Math.random()*2-1;
+  for(let i=0;i<nd.length;i++){ const k=1-i/nd.length; nd[i]=(Math.random()*2-1)*k; }
   const ns = AC.createBufferSource(); ns.buffer = nb;
-  const nf = AC.createBiquadFilter(); nf.type='bandpass'; nf.Q.value=2.2;
-  nf.frequency.setValueAtTime(320, t0);
-  // 转圈感：0.9Hz LFO 调制带通频率 ±180Hz
-  const lfo = AC.createOscillator(); lfo.frequency.value = 0.9;
-  const lfoG = AC.createGain(); lfoG.gain.value = 180;
-  lfo.connect(lfoG); lfoG.connect(nf.frequency);
+  const hp = AC.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=900;
+  const bp = AC.createBiquadFilter(); bp.type='bandpass'; bp.Q.value=0.7;
+  bp.frequency.setValueAtTime(1400, t0);
+  bp.frequency.exponentialRampToValueAtTime(3200, t0+0.12);   // 上扫：拂过去
+  bp.frequency.exponentialRampToValueAtTime(1800, t0+0.35);   // 回落收住
   const ng = AC.createGain();
   ng.gain.setValueAtTime(0.0001, t0);
-  ng.gain.exponentialRampToValueAtTime(0.10, t0+0.18);
-  ng.gain.setValueAtTime(0.10, t0+0.62);
-  ng.gain.exponentialRampToValueAtTime(0.0001, t0+0.95);
-  ns.connect(nf); nf.connect(ng); connectOut(ng, 0);
-  ns.start(t0); ns.stop(t0+1.0);
-  lfo.start(t0); lfo.stop(t0+1.0);
+  ng.gain.exponentialRampToValueAtTime(0.12, t0+0.02);
+  ng.gain.exponentialRampToValueAtTime(0.0001, t0+dur);
+  ns.connect(hp); hp.connect(bp); bp.connect(ng); connectOut(ng, 0);
+  ns.start(t0); ns.stop(t0+dur+0.02);
   SND.grinds++;
 }
 
