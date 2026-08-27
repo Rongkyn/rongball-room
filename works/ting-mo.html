@@ -49,6 +49,8 @@
   #state{transition:color .8s;}
   #snd{cursor:pointer;transition:color .5s;}
   #snd:hover{color:#5c5244;}
+  #clear{cursor:pointer;transition:color .5s;user-select:none;}
+  #clear:hover{color:#5c5244;}
 </style>
 </head>
 <body>
@@ -63,7 +65,7 @@
 </div>
 <footer>
   <div>点落一团墨 · 拖扫行笔 · 双击清纸</div>
-  <div><span id="state">研墨…</span> · <span id="snd">声·待启</span></div>
+  <div><span id="state">研墨…</span> · <span id="snd">声·待启</span> · <span id="clear" title="清除纸面重新研墨">研墨清纸</span></div>
 </footer>
 
 <script src="lib/audio-lib.js"></script>
@@ -474,11 +476,13 @@ inkCv.addEventListener('pointermove', e=>{
   lastP=[gx,gy]; lastT=now; revive();
 });
 addEventListener('pointerup', ()=>{ drawing=false; });
-inkCv.addEventListener('dblclick', ()=>{
+function clearPaper(){
   W.fill(0);P.fill(0);S.fill(0);
   grind();
   revive(); stateEl.textContent='研墨…';
-});
+}
+inkCv.addEventListener('dblclick', clearPaper);
+document.getElementById('clear').addEventListener('click', clearPaper);
 
 /* ---------- 声音开关 ---------- */
 sndEl.addEventListener('click', ()=>{
